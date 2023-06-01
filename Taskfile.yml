@@ -1,0 +1,27 @@
+version: '3'
+
+tasks:
+  create_cluster:
+    cmds:
+      - kind create cluster --name kind --config=./kind/kind.yaml
+      - kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
+      - kubectl wait --namespace ingress-nginx --for=condition=ready pod --selector=app.kubernetes.io/component=controller --timeout=90s
+
+  delete_cluster:
+    deps: [delete_example]
+    cmds:
+      - kind delete cluster --name kind
+
+  apply_example:
+    cmds:
+      - kubectl apply -f ./kind/usage.yaml
+      - kubectl get pods
+
+  request_example:
+    cmds:
+      - curl localhost/foo/hostname
+      - curl localhost/bar/hostname
+
+  delete_example:
+    cmds:
+      - kubectl delete -f ./kind/usage.yaml

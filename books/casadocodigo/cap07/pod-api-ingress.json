@@ -1,0 +1,29 @@
+{
+  "apiVersion": "networking.k8s.io/v1",
+  "kind": "Ingress",
+  "metadata": {
+    "name": "api-ing"
+  },
+  "spec": {
+    "rules": [
+      {
+        "http": {
+          "paths": [
+            {
+              "pathType": "Prefix",
+              "path": "/teste",
+              "backend": {
+                "service": {
+                  "name": "pod-api-svc",
+                  "port": {
+                    "number": 8085
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

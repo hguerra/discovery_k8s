@@ -1,0 +1,25 @@
+{
+  "apiVersion": "extensions/v1beta1",
+  "kind": "Ingress",
+  "metadata": {
+    "name": "api-ing" // Nome do nosso ingress
+  },
+  "spec": {
+    "backend": { // Aqui especificamos qual será o edge router
+      "serviceName": "default-http-backend", // Nome do nosso serviço
+      "servicePort": 80 // Porta pela qual o serviço ouve as requisições
+    },
+    "rules": [{
+      "host": "minhaapi.info",
+      "http": {
+        "paths": [{
+          "path": "/teste",
+          "backend": {
+            "serviceName": "pod-api-svc",
+            "servicePort": 8085
+          }
+        }]
+      }
+    }]
+  }
+}

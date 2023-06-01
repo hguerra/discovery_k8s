@@ -1,0 +1,33 @@
+{
+  "apiVersion": "v1",
+  "kind": "Pod",
+  "metadata": {
+    // Aqui vamos ter metadados sobre o pod, informações internas do cluster
+    "name": "mongodb-pod" // Nome interno do pod (até 15 letras)
+  },
+  "spec": {
+    // Maneira como o pod tem de se comportar
+    "containers": [
+      // Informações sobre os contêineres que vão rodar no pod
+      {
+        "name": "mongodb", // Nome do contêiner
+        "image": "mongo", // Nome da imagem
+        "resources": {
+          "requests": { // Minimo de recursos
+            "cpu": "100m", // 100 milicores é igual a 0.1 ou 10%
+            "memory": "128M"
+          },
+          "limits": { // Maximo de recursos
+            "cpu": "250m",
+            "memory": "256M"
+          }
+        },
+        "ports": [
+          {
+            "containerPort": 27017 // Porta interna do contêiner
+          }
+        ]
+      }
+    ]
+  }
+}
