@@ -5,6 +5,10 @@ tasks:
     cmds:
       - kind create cluster --name kind --config=./kind/kind.yaml
       - kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
+      - kubectl get pods -n ingress-nginx
+
+  validate_cluster:
+    cmds:
       - kubectl wait --namespace ingress-nginx --for=condition=ready pod --selector=app.kubernetes.io/component=controller --timeout=90s
 
   delete_cluster:

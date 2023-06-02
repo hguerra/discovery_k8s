@@ -1,0 +1,68 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pod-info-deployment
+  namespace: development
+  labels:
+    app: pod-info
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: pod-info
+  template:
+    metadata:
+      labels:
+        app: pod-info
+    spec:
+      containers:
+        - name: pod-info-container
+          image: kimschles/pod-info-app:latest
+
+          # A Container is guaranteed to have as much memory as it requests, but is not allowed to use more memory than its limit.
+          # https://kubernetes.io/docs/tasks/configure-pod-container/assign-memory-resource/
+          resources:
+            requests:
+              memory: "64Mi" # min
+              cpu: "250m"
+            limits:
+              memory: "128Mi" # max
+              cpu: "500m"
+
+          # Proteger o container contra ataques e acesso root
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            capabilities:
+              drop:
+                - ALL
+            readOnlyRootFilesystem: true
+
+          # Validar se o container esta pronto para receber requisições
+          # https://komodor.com/learn/kubernetes-readiness-probes-a-practical-guide
+          # https://spacelift.io/blog/kubernetes-liveness-probe
+          # https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 3
+
+          ports:
+            - containerPort: 3000
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP

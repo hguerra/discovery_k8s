@@ -1,0 +1,21 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: cron-job
+  namespace: development
+spec:
+  schedule: '* * * * *'
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: cron-container
+              image: curlimages/curl:8.1.1
+              imagePullPolicy: IfNotPresent
+              command:
+                - /bin/sh
+                - -c
+                - date; curl --connect-timeout 5 --max-time 60 --no-keepalive -i -X GET --url 'http://mockbin.com/request?foo=bar&foo=baz'
+          restartPolicy: OnFailure
