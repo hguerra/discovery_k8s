@@ -65,6 +65,7 @@ kubectl get svc -n development
 kubectl get svc -n ingress-nginx
 
 kubectl logs -f svc/demo-service -n development
+
 kubectl logs -f svc/ingress-nginx-controller -n ingress-nginx
 ```
 
@@ -78,25 +79,11 @@ https://spacelift.io/blog/kubernetes-liveness-probe
 https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes
 
 
-
-Como executar cron jobs no Kubernetes?
-
-https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/
-
-https://komodor.com/learn/kubernetes-cronjobs/
-
-https://nieldw.medium.com/using-a-kubernetes-cronjob-the-team-city-api-to-trigger-a-regular-backup-17dfb076d83a
-
+Removendo os recursos criados:
 ```
-kubectl apply -f courses/linkedin/learning-kubernetes-16086900/04/cronjob.yaml
+kubectl delete -f courses/linkedin/learning-kubernetes-16086900/04/service.yaml
 
-kubectl get pods -n development
-
-kubectl get jobs -n development
-
-kubectl logs -f jobs/cron-job-28094500 -n development
-
-kubectl get jobs -n development --watch
+kubectl delete -f courses/linkedin/learning-kubernetes-16086900/04/deployment.yaml
 ```
 
 
@@ -109,13 +96,3 @@ https://cloud.google.com/kubernetes-engine/docs/tutorials/http-balancer?hl=pt-br
 https://cloud.google.com/blog/products/containers-kubernetes/exposing-services-on-gke
 
 https://learnk8s.io/terraform-gke
-
-
-Removendo os recursos criados:
-```
-kubectl delete -f courses/linkedin/learning-kubernetes-16086900/04/cronjob.yaml
-
-kubectl delete -f courses/linkedin/learning-kubernetes-16086900/04/service.yaml
-
-kubectl delete -f courses/linkedin/learning-kubernetes-16086900/04/deployment.yaml
-```

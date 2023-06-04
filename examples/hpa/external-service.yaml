@@ -1,0 +1,9 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: external-service
+  namespace: development
+spec:
+  type: ExternalName
+  externalName: servicos.cptec.inpe.br
